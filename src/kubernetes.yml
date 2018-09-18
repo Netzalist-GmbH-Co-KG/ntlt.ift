@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ntlt-ift
+  labels:
+    app: ntlt-ift
+spec:
+  selector:
+    matchLabels:
+      app: ntlt-ift
+  template:
+    metadata:
+      labels:
+        app: ntlt-ift
+    spec:
+      containers:
+      - name: ntlt-ift
+        image: ntlt/ntlt.ift:latest
+        metadata:
+        ports:
+        - containerPort: 80
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ntlt-ift
+spec:
+  selector:
+    app: ntlt-ift
+  ports:
+  - port: 80
+  type: LoadBalancer

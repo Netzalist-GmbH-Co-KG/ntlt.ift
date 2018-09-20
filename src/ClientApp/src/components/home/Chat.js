@@ -1,17 +1,29 @@
 // components/Home/chat.tsx
 import React, { Component } from 'react';
 import moment from 'moment';
+import { ChatService } from '../../services/ChatService';
 
 export class Chat extends Component {
+    msg= null;
+    panel = null;
 
     constructor() {
         super();
         this.state = { messages: [], currentMessage: '' };
 
+        let that = this;
+        this._chatService = new ChatService((msg) => {
+            this.handleOnSocket(that, msg);
+        });
+
+        this.handleOnInitialMessagesFetched = this.handleOnInitialMessagesFetched.bind(this);
+        this.handlePanelRef = this.handlePanelRef.bind(this);
         this.handleMessageRef = this.handleMessageRef.bind(this);
         this.handleMessageChange = this.handleMessageChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.addMessage = this.addMessage.bind(this);
+
+        this._chatService.fetchInitialMessages(this.handleOnInitialMessagesFetched);
     }
 
     render() {
@@ -43,6 +55,28 @@ export class Chat extends Component {
             </div>
         </div>);
     }
+    handlePanelRef(div) {
+        this.panel = div;
+    }
+    
+    handleOnInitialMessagesFetched(messages) {
+        this.setState({
+            messages: messages
+        });
+
+        this.scrollDown(this);
+    }
+
+    handleOnSocket(that, message) {
+        let messages = that.state.messages;
+        messages.push(message);
+        that.setState({
+            messages: messages,
+            currentMessage: ''
+        });
+        that.scrollDown(that);
+        that.focusField(that);
+    }
 
     handleMessageRef(input) {
         this.msg = input;
@@ -53,19 +87,26 @@ export class Chat extends Component {
     }
 
     onSubmit(event) {
-        this.addMessage();
+        this.addMessage(this);
         event.preventDefault();
         return false;
     }
 
-    addMessage() {
-        let msg = this.state.messages;
-        let id = this.state.messages.length;
-        msg.push({ id: id, date: new Date(), message: this.state.currentMessage })
-        this.setState({
-            messages: msg,
-            currentMessage: ''
-        });
-        this.msg.focus();
+    addMessage(that) {
+        let currentMessage = that.state.currentMessage;
+        if (currentMessage.length === 0) {
+            return;
+        }
+
+        this._chatService.addMessage(currentMessage);
+    }
+
+    scrollDown(that) {
+        let div = that.panel;
+        div.scrollTop = div.scrollHeight;
+    }
+
+    focusField(that) {
+        that.msg.focus();
     }
 }

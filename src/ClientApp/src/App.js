@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/home/Home';
-import { FetchData } from './components/fetchdata/FetchData';
-import { Counter } from './components/counter/Counter';
 import { StartPage } from './components/startpage/StartPage';
+import { Trainer } from './components/trainer/Trainer';
+import { Student } from './components/student/Student';
 
 export default class App extends Component {
   displayName = App.name
@@ -12,10 +12,10 @@ export default class App extends Component {
   render() {
     return (
       <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/startpage' component={StartPage} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetchdata' component={FetchData} />
+        <Route exact path='/' component={StartPage} />
+        <Route path='/chattest' component={Home} />
+        <Route path='/trainer' component={Trainer} />
+        <Route path='/student' component={Student} />
       </Layout>
     );
   }

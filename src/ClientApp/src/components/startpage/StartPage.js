@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { Redirect } from "react-router-dom";
 
 export class StartPage extends Component {
 
     constructor() {
         super();
-        this.state = { studentName: '', studentCourseId: '', trainerName: '', trainerCourseName: '' };
+        this.state = { studentName: '', studentCourseId: '', trainerName: '', trainerCourseName: '', toTrainer: false, toStudent: false };
         this.handleStudentNameChange = this.handleStudentNameChange.bind(this);
         this.handleStudentCourseId = this.handleStudentCourseId.bind(this);
         this.handleTrainerName = this.handleTrainerName.bind(this);
@@ -16,6 +17,15 @@ export class StartPage extends Component {
     displayName = StartPage.name
 
     render() {
+
+        if (this.state.toTrainer === true) {
+            return <Redirect to='/trainer' />
+        }
+
+        if (this.state.toStudent === true) {
+            return <Redirect to='/student' />
+        }
+
         return (
             <div className='row spacer50'>
                 <div className=" col-md-offset-3 col-md-6 text-center">
@@ -74,10 +84,11 @@ export class StartPage extends Component {
         this.setState({ trainerCourseName: event.target.value });
     }
     joinTraining(event) {
-        this.setState({ studentName: "Click" });
+        this.setState({ studentName: "Click", toStudent: true });
+        
     }
     createTraining(event) {
-        this.setState({ trainerName: "Click" });
+        this.setState({ trainerName: "Click", toTrainer: true });
     }
 
 }

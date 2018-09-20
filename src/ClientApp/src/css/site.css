@@ -31,11 +31,20 @@
         list-style: none;
     }
 
+.spacer50{
+    margin-top: 50px;
+}
+
+.spacer20{
+    margin-top: 20px;
+}
 
 .chat-button {
     width: 50px !important;
 }
-
+.login-label {
+    width: 100px !important;
+}
 
 @media (max-width: 767px) {
     /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */

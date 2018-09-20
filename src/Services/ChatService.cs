@@ -8,7 +8,7 @@ namespace ReactChatDemo.Services
 
     public class ChatService : IChatService
     {
-        private List<ChatMessage> _allMessages = new List<ChatMessage>() {new ChatMessage{Date=DateTime.Now, Id="aa", Message="Test", Sender="Sender1"}};
+        private List<ChatMessage> _allMessages = new List<ChatMessage>() {new ChatMessage(Guid.NewGuid()) {Date=DateTime.Now, Id="aa", Message="Test", Sender="Sender1"}};
 
         public async Task<ChatMessage> CreateNewMessage(string senderName, string message)
         {
